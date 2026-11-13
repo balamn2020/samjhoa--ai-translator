@@ -79,6 +79,7 @@ export default function PromptInput7({
 
   const [text, setText] = useState("");
   const [files, setFiles] = useState<File[]>([]);
+  const [fileError, setFileError] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -139,8 +140,15 @@ export default function PromptInput7({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFileError(null);
     const selected = e.target.files?.[0];
     if (selected) {
+      if (selected.size > 10 * 1024 * 1024) {
+        const sizeMb = (selected.size / (1024 * 1024)).toFixed(1);
+        setFileError(`File is too large (${sizeMb} MB). Maximum allowed upload size is 10 MB.`);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
       setFiles((prev) => [...prev, selected]);
       onFileSelect?.(selected);
     }
@@ -178,6 +186,20 @@ export default function PromptInput7({
               </button>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* File Size Error Alert */}
+      {fileError && (
+        <div className="flex items-center justify-between gap-2 mb-2 p-2 rounded-lg bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/60 text-xs text-red-700 dark:text-red-300 animate-in fade-in">
+          <span>⚠️ {fileError}</span>
+          <button
+            type="button"
+            onClick={() => setFileError(null)}
+            className="text-red-500 hover:text-red-700 dark:hover:text-red-200 font-bold p-0.5"
+          >
+            ✕
+          </button>
         </div>
       )}
 

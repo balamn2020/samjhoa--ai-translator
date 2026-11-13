@@ -89,6 +89,12 @@ export default function Home() {
 
   const handleFile = useCallback(
     (file: File) => {
+      if (file.size > 10 * 1024 * 1024) {
+        const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+        setError(`File is too large (${sizeMb} MB). Maximum allowed upload size is 10 MB.`);
+        setStage("error");
+        return;
+      }
       const activeLang = language || "hi";
       setLanguage(activeLang);
       const formData = new FormData();
@@ -149,9 +155,6 @@ export default function Home() {
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white font-calligraphy tracking-wide">
             Samjhao
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
-            Understand any official document
-          </p>
         </div>
 
         {stage === "error" && (

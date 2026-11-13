@@ -10,7 +10,7 @@ import { callLLM } from "@/lib/llm";
 import { transcribePrompt, explainPrompt } from "@/lib/prompts";
 import { checkGrounding } from "@/lib/grounding";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const MAX_TEXT_LENGTH = 10000;
 
 function jsonError(message: string, status: number) {
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
 
       if (fileVal && fileVal instanceof File && fileVal.size > 0) {
         if (fileVal.size > MAX_FILE_SIZE) {
-          return jsonError("File too large (max 5 MB)", 400);
+          return jsonError("File too large (max 10 MB)", 400);
         }
 
         const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/heic", "application/pdf"];

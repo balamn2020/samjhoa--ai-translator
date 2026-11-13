@@ -165,7 +165,7 @@ export default function SettingsPage() {
               )}
             >
               <Moon className="w-4 h-4 text-blue-400" />
-              <span>Dark (OLED)</span>
+              <span>Dark</span>
             </button>
 
             <button
@@ -182,9 +182,6 @@ export default function SettingsPage() {
               <span>System</span>
             </button>
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            Dark theme uses true `#000000` pitch black to save battery on OLED & AMOLED mobile screens.
-          </p>
         </section>
 
         {/* 2. Default Language */}

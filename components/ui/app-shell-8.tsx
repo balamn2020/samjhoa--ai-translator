@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   FileText,
-  Sparkles,
   Info,
   Sun,
   Moon,
@@ -43,14 +42,6 @@ export const DEFAULT_SHELL_TABS: AppShellTabItem[] = [
     description: "Read & simplify official notices, bills and agreements",
   },
   {
-    id: "samples",
-    label: "Samples",
-    labelHi: "नमूने",
-    icon: Sparkles,
-    href: "/#samples-section",
-    description: "Try real-world bank, utility, and notice examples",
-  },
-  {
     id: "about",
     label: "About",
     labelHi: "परिचय",
@@ -74,7 +65,6 @@ export default function AppShell8({
   onTabChange,
   items = DEFAULT_SHELL_TABS,
   brandName = "Samjhao",
-  brandTagline = "Understand any official document",
   className,
 }: AppShell8Props) {
   const pathname = usePathname();
@@ -121,17 +111,9 @@ export default function AppShell8({
                 स
               </div>
               <div>
-                <div className="flex items-center gap-1.5">
-                  <h1 className="text-2xl font-bold tracking-tight text-gray-950 dark:text-white font-calligraphy">
-                    {brandName}
-                  </h1>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-blue-50 dark:bg-neutral-900 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-neutral-700">
-                    AI
-                  </span>
-                </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 leading-tight">
-                  {brandTagline}
-                </p>
+                <h1 className="text-2xl font-bold tracking-tight text-gray-950 dark:text-white font-calligraphy">
+                  {brandName}
+                </h1>
               </div>
             </Link>
 
@@ -194,27 +176,6 @@ export default function AppShell8({
             })}
           </nav>
         </div>
-
-        {/* Sidebar Footer - Settings Page Link */}
-        <div className="pt-4 border-t border-gray-100 dark:border-neutral-800">
-          <Link
-            href="/settings"
-            className={cn(
-              "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border transition-colors text-sm font-medium",
-              currentTab === "settings"
-                ? "bg-blue-600 text-white border-blue-600 shadow-sm font-semibold"
-                : "border-gray-200 dark:border-neutral-800 bg-gray-50/80 dark:bg-neutral-950/80 hover:bg-gray-100 dark:hover:bg-neutral-900 text-gray-700 dark:text-gray-200"
-            )}
-          >
-            <div className="flex items-center gap-2.5">
-              <Sliders className={cn("w-4 h-4", currentTab === "settings" ? "text-white" : "text-blue-600 dark:text-blue-400")} />
-              <span>Settings Bar</span>
-            </div>
-            <span className={cn("text-xs", currentTab === "settings" ? "text-blue-100" : "text-gray-400")}>
-              Configure →
-            </span>
-          </Link>
-        </div>
       </aside>
 
       {/* ── Main Content Area ─────────────────────────────────────────── */}
@@ -229,9 +190,6 @@ export default function AppShell8({
               <h1 className="text-xl font-bold text-gray-950 dark:text-white font-calligraphy leading-none">
                 {brandName}
               </h1>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-tight mt-0.5">
-                {brandTagline}
-              </p>
             </div>
           </Link>
 

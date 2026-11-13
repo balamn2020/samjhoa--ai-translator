@@ -65,9 +65,16 @@ export default function UploadBox({
   disabled,
 }: Props) {
   const [dragOver, setDragOver] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleFile = useCallback(
     async (file: File) => {
+      setErrorMsg(null);
+      if (file.size > 10 * 1024 * 1024) {
+        const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+        setErrorMsg(`File is too large (${sizeMb} MB). Maximum allowed upload size is 10 MB.`);
+        return;
+      }
       const resized = await resizeImage(file, 1600);
       onFile(resized);
     },
@@ -90,6 +97,7 @@ export default function UploadBox({
     files: File[],
     selectedLang?: SupportedLanguage
   ) => {
+    setErrorMsg(null);
     if (selectedLang && onLanguageChange) {
       onLanguageChange(selectedLang);
     }
@@ -129,11 +137,19 @@ export default function UploadBox({
           onFileSelect={handleFile}
           onSubmit={handlePromptSubmit}
         />
+
+        {errorMsg && (
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/60 text-xs text-red-800 dark:text-red-200 animate-in fade-in">
+            <span className="font-bold text-sm">⚠️</span>
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
         <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-300 px-1 font-medium">
           <span>
             Type, paste text, or click <strong className="text-gray-900 dark:text-white">📎</strong> to attach any document or photo
           </span>
-          <span className="hidden sm:inline text-gray-500 dark:text-gray-400">PDF, JPG, PNG (max 5MB)</span>
+          <span className="hidden sm:inline text-gray-500 dark:text-gray-400">PDF, JPG, PNG (max 10MB)</span>
         </div>
       </div>
     </div>
