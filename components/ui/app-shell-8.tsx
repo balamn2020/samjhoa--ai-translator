@@ -42,8 +42,6 @@ export const DEFAULT_SHELL_TABS: AppShellTabItem[] = [
     label: "Explainer",
     labelHi: "समझाओ",
     icon: FileText,
-    badge: "Core",
-    badgeColor: "bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300",
     description: "Read & simplify official notices, bills and agreements",
   },
   {
@@ -89,7 +87,7 @@ export default function AppShell8({
   activeTab = "explain",
   onTabChange,
   items = DEFAULT_SHELL_TABS,
-  brandName = "समझाओ",
+  brandName = "Samjhao",
   brandTagline = "Understand any official document",
   className,
   onOpenSettings,
@@ -236,24 +234,6 @@ export default function AppShell8({
               <span className="text-xs text-gray-400">Configure →</span>
             </button>
           )}
-
-          <div className="rounded-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/50 dark:from-neutral-950 dark:to-neutral-950 p-3.5 border border-blue-100/80 dark:border-neutral-800 text-xs text-gray-600 dark:text-gray-300 space-y-1.5">
-            <div className="flex items-center gap-2 font-semibold text-blue-900 dark:text-blue-200">
-              <Lock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span>Zero-Retention Guarantee</span>
-            </div>
-            <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">
-              Documents are processed directly in RAM and immediately erased. No database, no training logs.
-            </p>
-          </div>
-
-          <div className="flex items-center justify-between px-2 text-[11px] text-gray-400 dark:text-gray-500">
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Gemini 3.5 AI Online
-            </span>
-            <span>v1.0</span>
-          </div>
         </div>
       </aside>
 

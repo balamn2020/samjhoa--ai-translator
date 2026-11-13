@@ -6,7 +6,6 @@ import type { GroundingWarning } from "@/lib/grounding";
 import LanguagePicker from "@/components/LanguagePicker";
 import UploadBox from "@/components/UploadBox";
 import ResultView from "@/components/ResultView";
-import Disclaimer from "@/components/Disclaimer";
 import AppShell8 from "@/components/AppShell8";
 import SettingsBar from "@/components/SettingsBar";
 import AboutModal from "@/components/AboutModal";
@@ -159,7 +158,7 @@ export default function Home() {
           {/* Header */}
           <div className="text-center pt-2">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-serif">
-              समझाओ
+              Samjhao
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
               Understand any official document
@@ -235,23 +234,6 @@ export default function Home() {
                 </div>
                 <TiltedTiles onTileClick={handleTileClick} height={280} />
               </div>
-
-              {/* Privacy note */}
-              <div className="bg-green-50/90 dark:bg-neutral-950 border border-green-200 dark:border-neutral-800 rounded-xl p-4 transition-colors">
-                <p className="text-sm text-green-900 dark:text-green-200 font-bold">
-                  🔒 Your privacy is safe
-                </p>
-                <p className="text-sm text-green-800 dark:text-green-300 mt-1 leading-relaxed">
-                  Nothing is stored. Your document is read once, explained, and discarded.
-                  No database, no file storage, no logs of your document.
-                </p>
-                <p className="text-sm text-green-800 dark:text-green-300 mt-1 leading-relaxed">
-                  <strong className="text-green-950 dark:text-green-100">Tip:</strong> Hide Aadhaar, PAN and account numbers if you can before uploading.
-                </p>
-              </div>
-
-              {/* Disclaimer */}
-              <Disclaimer />
             </>
           )}
         </div>
