@@ -41,7 +41,7 @@ export default function AboutPage() {
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-2xl sm:text-3xl font-bold font-serif text-gray-950 dark:text-white">
+              <h1 className="text-3xl sm:text-4xl font-bold font-calligraphy text-gray-950 dark:text-white">
                 About Samjhao (समझाओ)
               </h1>
               <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-neutral-900 dark:text-blue-300 border border-blue-200 dark:border-neutral-800">

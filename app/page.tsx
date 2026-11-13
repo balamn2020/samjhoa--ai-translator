@@ -146,7 +146,7 @@ export default function Home() {
       <div className="max-w-xl mx-auto px-4 py-6 space-y-6">
         {/* Header */}
         <div className="text-center pt-2">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-serif">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white font-calligraphy tracking-wide">
             Samjhao
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">

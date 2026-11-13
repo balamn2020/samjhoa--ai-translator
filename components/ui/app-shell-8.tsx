@@ -122,7 +122,7 @@ export default function AppShell8({
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h1 className="text-xl font-bold tracking-tight text-gray-950 dark:text-white font-serif">
+                  <h1 className="text-2xl font-bold tracking-tight text-gray-950 dark:text-white font-calligraphy">
                     {brandName}
                   </h1>
                   <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-blue-50 dark:bg-neutral-900 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-neutral-700">
@@ -226,7 +226,7 @@ export default function AppShell8({
               स
             </div>
             <div>
-              <h1 className="text-base font-bold text-gray-950 dark:text-white font-serif leading-none">
+              <h1 className="text-xl font-bold text-gray-950 dark:text-white font-calligraphy leading-none">
                 {brandName}
               </h1>
               <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-tight mt-0.5">

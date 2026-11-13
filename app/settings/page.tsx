@@ -107,7 +107,7 @@ export default function SettingsPage() {
               <Sliders className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold font-serif text-gray-950 dark:text-white">
+              <h1 className="text-2xl sm:text-3xl font-bold font-calligraphy text-gray-950 dark:text-white">
                 Settings & Preferences (सेटिंग्स)
               </h1>
               <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
