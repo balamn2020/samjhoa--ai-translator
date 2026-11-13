@@ -7,8 +7,6 @@ import LanguagePicker from "@/components/LanguagePicker";
 import UploadBox from "@/components/UploadBox";
 import ResultView from "@/components/ResultView";
 import AppShell8 from "@/components/AppShell8";
-import SettingsBar from "@/components/SettingsBar";
-import AboutModal from "@/components/AboutModal";
 import TiltedTiles, { type TiltedTileItem } from "@/components/TiltedTiles";
 import { sampleDocs } from "@/data/sample-docs";
 
@@ -27,8 +25,6 @@ export default function Home() {
   const [explanation, setExplanation] = useState<Explanation | null>(null);
   const [groundingWarnings, setGroundingWarnings] = useState<GroundingWarning[]>([]);
   const [error, setError] = useState<string>("");
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
   const [today] = useState(() =>
     new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" })
   );
@@ -142,116 +138,89 @@ export default function Home() {
       setTimeout(() => {
         document.getElementById("samples-section")?.scrollIntoView({ behavior: "smooth" });
       }, 50);
-    } else if (tabId === "about") {
-      setAboutOpen(true);
     }
   };
 
   return (
-    <>
-      <AppShell8
-        onTabChange={handleTabChange}
-        onOpenSettings={() => setSettingsOpen(true)}
-        onOpenAbout={() => setAboutOpen(true)}
-      >
-        <div className="max-w-xl mx-auto px-4 py-6 space-y-6">
-          {/* Header */}
-          <div className="text-center pt-2">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-serif">
-              Samjhao
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
-              Understand any official document
-            </p>
-          </div>
-
-          {stage === "error" && (
-            <div className="space-y-4">
-              <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-2xl p-6 text-center">
-                <p className="text-4xl mb-3">😕</p>
-                <p className="text-lg text-red-800 dark:text-red-200 font-medium">{error}</p>
-              </div>
-              <button
-                onClick={reset}
-                className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-lg font-medium transition-colors"
-              >
-                ← Try Again
-              </button>
-            </div>
-          )}
-
-          {stage === "result" && explanation && (
-            <ResultView
-              explanation={explanation}
-              language={language!}
-              today={today}
-              groundingWarnings={groundingWarnings}
-              onBack={reset}
-            />
-          )}
-
-          {(stage === "input" || stage === "processing") && (
-            <>
-              {/* Inline processing banner when reading document */}
-              {stage === "processing" && (
-                <div className="bg-blue-50/90 dark:bg-neutral-950 border border-blue-200 dark:border-neutral-800 rounded-2xl p-5 text-center space-y-3 shadow-xs animate-in fade-in">
-                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-3 border-blue-200 dark:border-neutral-800 border-t-blue-600 dark:border-t-blue-400" />
-                  <p className="text-base text-blue-900 dark:text-blue-100 font-semibold animate-pulse">
-                    {progressMessages[progressIdx]}
-                  </p>
-                  <p className="text-xs text-blue-600 dark:text-blue-400">
-                    Reading and simplifying your document in {language ? LANGUAGE_NAMES[language] : "your chosen language"}...
-                  </p>
-                </div>
-              )}
-
-              {/* Language picker */}
-              <LanguagePicker selected={language} onSelect={setLanguage} />
-
-              {/* Upload box with Prompt / Chatbox & Language Selector */}
-              <UploadBox
-                disabled={stage === "processing"}
-                language={language}
-                onLanguageChange={setLanguage}
-                onFile={handleFile}
-                onText={handleText}
-              />
-
-              {/* Tilted Tiles Showcase */}
-              <div id="samples-section" className="pt-2 scroll-mt-20">
-                <div className="mb-3 px-1">
-                  <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                    Try with a real sample document
-                  </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Click any card to instantly see how Samjhao explains it
-                  </p>
-                </div>
-                <TiltedTiles onTileClick={handleTileClick} height={280} />
-              </div>
-            </>
-          )}
+    <AppShell8 onTabChange={handleTabChange} activeTab="explain">
+      <div className="max-w-xl mx-auto px-4 py-6 space-y-6">
+        {/* Header */}
+        <div className="text-center pt-2">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-serif">
+            Samjhao
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
+            Understand any official document
+          </p>
         </div>
-      </AppShell8>
 
-      {/* Settings Bar Drawer */}
-      <SettingsBar
-        isOpen={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        currentLanguage={language}
-        onLanguageChange={setLanguage}
-        onOpenAbout={() => {
-          setSettingsOpen(false);
-          setAboutOpen(true);
-        }}
-        onResetApp={reset}
-      />
+        {stage === "error" && (
+          <div className="space-y-4">
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-2xl p-6 text-center">
+              <p className="text-4xl mb-3">😕</p>
+              <p className="text-lg text-red-800 dark:text-red-200 font-medium">{error}</p>
+            </div>
+            <button
+              onClick={reset}
+              className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-lg font-medium transition-colors"
+            >
+              ← Try Again
+            </button>
+          </div>
+        )}
 
-      {/* About Modal */}
-      <AboutModal
-        isOpen={aboutOpen}
-        onClose={() => setAboutOpen(false)}
-      />
-    </>
+        {stage === "result" && explanation && (
+          <ResultView
+            explanation={explanation}
+            language={language!}
+            today={today}
+            groundingWarnings={groundingWarnings}
+            onBack={reset}
+          />
+        )}
+
+        {(stage === "input" || stage === "processing") && (
+          <>
+            {/* Inline processing banner when reading document */}
+            {stage === "processing" && (
+              <div className="bg-blue-50/90 dark:bg-neutral-950 border border-blue-200 dark:border-neutral-800 rounded-2xl p-5 text-center space-y-3 shadow-xs animate-in fade-in">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-3 border-blue-200 dark:border-neutral-800 border-t-blue-600 dark:border-t-blue-400" />
+                <p className="text-base text-blue-900 dark:text-blue-100 font-semibold animate-pulse">
+                  {progressMessages[progressIdx]}
+                </p>
+                <p className="text-xs text-blue-600 dark:text-blue-400">
+                  Reading and simplifying your document in {language ? LANGUAGE_NAMES[language] : "your chosen language"}...
+                </p>
+              </div>
+            )}
+
+            {/* Language picker */}
+            <LanguagePicker selected={language} onSelect={setLanguage} />
+
+            {/* Upload box with Prompt / Chatbox & Language Selector */}
+            <UploadBox
+              disabled={stage === "processing"}
+              language={language}
+              onLanguageChange={setLanguage}
+              onFile={handleFile}
+              onText={handleText}
+            />
+
+            {/* Tilted Tiles Showcase */}
+            <div id="samples-section" className="pt-2 scroll-mt-20">
+              <div className="mb-3 px-1">
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                  Try with a real sample document
+                </h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Click any card to instantly see how Samjhao explains it
+                </p>
+              </div>
+              <TiltedTiles onTileClick={handleTileClick} height={280} />
+            </div>
+          </>
+        )}
+      </div>
+    </AppShell8>
   );
 }

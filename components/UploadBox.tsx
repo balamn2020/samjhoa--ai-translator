@@ -102,8 +102,6 @@ export default function UploadBox({
     let finalPrompt = promptText;
     if (promptMode === "ask") {
       finalPrompt = `[Question/Ask Mode]: ${promptText}`;
-    } else if (promptMode === "edit") {
-      finalPrompt = `[Edit/Rewrite Request]: ${promptText}`;
     }
 
     onText(finalPrompt, selectedLang);
@@ -122,7 +120,7 @@ export default function UploadBox({
       }`}
     >
       <div className="space-y-2">
-        {/* Unified Chatbox: Prompt Input 7 with Ask/Agent/Edit, Language Selector & Document Attachments */}
+        {/* Unified Chatbox: Prompt Input 7 with Ask/Agent, Language Selector & Document Attachments */}
         <PromptInput7
           initialMode="agent"
           disabled={disabled}

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import {
   FileText,
   Sparkles,
-  ShieldCheck,
-  Lock,
   Info,
   Sun,
   Moon,
@@ -19,8 +19,7 @@ export interface AppShellTabItem {
   label: string;
   labelHi?: string;
   icon: React.ElementType;
-  badge?: string;
-  badgeColor?: string;
+  href: string;
   description?: string;
 }
 
@@ -32,8 +31,6 @@ export interface AppShell8Props {
   brandName?: string;
   brandTagline?: string;
   className?: string;
-  onOpenSettings?: () => void;
-  onOpenAbout?: () => void;
 }
 
 export const DEFAULT_SHELL_TABS: AppShellTabItem[] = [
@@ -42,6 +39,7 @@ export const DEFAULT_SHELL_TABS: AppShellTabItem[] = [
     label: "Explainer",
     labelHi: "समझाओ",
     icon: FileText,
+    href: "/",
     description: "Read & simplify official notices, bills and agreements",
   },
   {
@@ -49,60 +47,57 @@ export const DEFAULT_SHELL_TABS: AppShellTabItem[] = [
     label: "Samples",
     labelHi: "नमूने",
     icon: Sparkles,
+    href: "/#samples-section",
     description: "Try real-world bank, utility, and notice examples",
-  },
-  {
-    id: "safety",
-    label: "Safety & Scams",
-    labelHi: "सुरक्षा",
-    icon: ShieldCheck,
-    description: "Learn how Samjhao detects phishing and fake notices",
-  },
-  {
-    id: "privacy",
-    label: "Privacy",
-    labelHi: "गोपनीयता",
-    icon: Lock,
-    description: "100% ephemeral: documents are analyzed once & erased",
   },
   {
     id: "about",
     label: "About",
     labelHi: "परिचय",
     icon: Info,
-    description: "Learn about the mission, features, and creators of Samjhao",
+    href: "/about",
+    description: "Learn about mission, scam protection, and privacy",
+  },
+  {
+    id: "settings",
+    label: "Settings",
+    labelHi: "सेटिंग्स",
+    icon: Sliders,
+    href: "/settings",
+    description: "Customize theme, language, and audio preferences",
   },
 ];
 
 export default function AppShell8({
   children,
-  activeTab = "explain",
+  activeTab,
   onTabChange,
   items = DEFAULT_SHELL_TABS,
   brandName = "Samjhao",
   brandTagline = "Understand any official document",
   className,
-  onOpenSettings,
-  onOpenAbout,
 }: AppShell8Props) {
-  const [currentTab, setCurrentTab] = useState<string>(activeTab);
-  const [modalTab, setModalTab] = useState<AppShellTabItem | null>(null);
+  const pathname = usePathname();
+  const router = useRouter();
   const { resolvedTheme, toggleTheme } = useTheme();
 
-  const handleSelectTab = (tabId: string) => {
-    setCurrentTab(tabId);
-    onTabChange?.(tabId);
+  // Determine active tab based on activeTab prop or current pathname
+  const currentTab =
+    activeTab ||
+    (pathname === "/about"
+      ? "about"
+      : pathname === "/settings"
+      ? "settings"
+      : "explain");
 
-    if (tabId === "about") {
-      onOpenAbout?.();
-      return;
-    }
+  const handleTabClick = (e: React.MouseEvent, tab: AppShellTabItem) => {
+    onTabChange?.(tab.id);
 
-    if (tabId === "safety" || tabId === "privacy") {
-      const item = items.find((i) => i.id === tabId);
-      setModalTab(item || null);
-    } else {
-      setModalTab(null);
+    if (tab.id === "samples" && pathname === "/") {
+      e.preventDefault();
+      document.getElementById("samples-section")?.scrollIntoView({ behavior: "smooth" });
+    } else if (tab.id === "explain" && pathname === "/") {
+      // already on home page, allow callback to reset view
     }
   };
 
@@ -118,8 +113,11 @@ export default function AppShell8({
         {/* Brand / Logo */}
         <div className="space-y-6">
           <div className="flex items-center justify-between px-1">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-blue-500/20">
+            <Link
+              href="/"
+              className="flex items-center gap-3 group transition-opacity hover:opacity-90"
+            >
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
                 स
               </div>
               <div>
@@ -135,7 +133,7 @@ export default function AppShell8({
                   {brandTagline}
                 </p>
               </div>
-            </div>
+            </Link>
 
             {/* Quick theme toggle */}
             <button
@@ -161,10 +159,10 @@ export default function AppShell8({
               const Icon = tab.icon;
               const isActive = currentTab === tab.id;
               return (
-                <button
+                <Link
                   key={tab.id}
-                  type="button"
-                  onClick={() => handleSelectTab(tab.id)}
+                  href={tab.href}
+                  onClick={(e) => handleTabClick(e, tab)}
                   className={cn(
                     "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all group",
                     isActive
@@ -191,28 +189,31 @@ export default function AppShell8({
                       </span>
                     )}
                   </div>
-                </button>
+                </Link>
               );
             })}
           </nav>
         </div>
 
-        {/* Sidebar Footer info & Settings Bar trigger */}
-        <div className="space-y-3 pt-4 border-t border-gray-100 dark:border-neutral-800">
-          {/* Settings Bar Button */}
-          {onOpenSettings && (
-            <button
-              type="button"
-              onClick={onOpenSettings}
-              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-neutral-800 bg-gray-50/80 dark:bg-neutral-950/80 hover:bg-gray-100 dark:hover:bg-neutral-900 text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <Sliders className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span>Settings Bar</span>
-              </div>
-              <span className="text-xs text-gray-400">Configure →</span>
-            </button>
-          )}
+        {/* Sidebar Footer - Settings Page Link */}
+        <div className="pt-4 border-t border-gray-100 dark:border-neutral-800">
+          <Link
+            href="/settings"
+            className={cn(
+              "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border transition-colors text-sm font-medium",
+              currentTab === "settings"
+                ? "bg-blue-600 text-white border-blue-600 shadow-sm font-semibold"
+                : "border-gray-200 dark:border-neutral-800 bg-gray-50/80 dark:bg-neutral-950/80 hover:bg-gray-100 dark:hover:bg-neutral-900 text-gray-700 dark:text-gray-200"
+            )}
+          >
+            <div className="flex items-center gap-2.5">
+              <Sliders className={cn("w-4 h-4", currentTab === "settings" ? "text-white" : "text-blue-600 dark:text-blue-400")} />
+              <span>Settings Bar</span>
+            </div>
+            <span className={cn("text-xs", currentTab === "settings" ? "text-blue-100" : "text-gray-400")}>
+              Configure →
+            </span>
+          </Link>
         </div>
       </aside>
 
@@ -220,7 +221,7 @@ export default function AppShell8({
       <div className="flex-1 flex flex-col min-w-0 pb-24 md:pb-8">
         {/* Mobile Header (small screens only) */}
         <header className="md:hidden sticky top-0 z-20 flex items-center justify-between border-b border-gray-200/80 dark:border-neutral-800 bg-white/90 dark:bg-black/90 backdrop-blur-md px-4 py-3">
-          <div className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-base shadow-sm">
               स
             </div>
@@ -232,7 +233,7 @@ export default function AppShell8({
                 {brandTagline}
               </p>
             </div>
-          </div>
+          </Link>
 
           <div className="flex items-center gap-1.5">
             {/* Quick theme toggle */}
@@ -249,17 +250,19 @@ export default function AppShell8({
               )}
             </button>
 
-            {/* Settings trigger */}
-            {onOpenSettings && (
-              <button
-                type="button"
-                onClick={onOpenSettings}
-                title="Open settings"
-                className="p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors"
-              >
-                <Sliders className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              </button>
-            )}
+            {/* Settings Link */}
+            <Link
+              href="/settings"
+              title="Open settings"
+              className={cn(
+                "p-2 rounded-xl transition-colors",
+                currentTab === "settings"
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-900"
+              )}
+            >
+              <Sliders className={cn("w-4 h-4", currentTab === "settings" ? "text-white" : "text-blue-600 dark:text-blue-400")} />
+            </Link>
           </div>
         </header>
 
@@ -273,10 +276,10 @@ export default function AppShell8({
           const Icon = tab.icon;
           const isActive = currentTab === tab.id;
           return (
-            <button
+            <Link
               key={tab.id}
-              type="button"
-              onClick={() => handleSelectTab(tab.id)}
+              href={tab.href}
+              onClick={(e) => handleTabClick(e, tab)}
               className={cn(
                 "flex-1 flex flex-col items-center justify-center py-1 px-1.5 rounded-xl text-[11px] font-medium transition-all relative",
                 isActive
@@ -300,74 +303,10 @@ export default function AppShell8({
               {isActive && (
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 mt-0.5 animate-pulse" />
               )}
-            </button>
+            </Link>
           );
         })}
       </nav>
-
-      {/* ── Modal for Safety / Privacy Info Tab ────────────────────────── */}
-      {modalTab && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/85 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-neutral-950 text-gray-900 dark:text-gray-100 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 dark:border-neutral-800 space-y-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-blue-50 dark:bg-neutral-900 text-blue-600 dark:text-blue-400">
-                  <modalTab.icon className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold">
-                    {modalTab.label}
-                  </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{modalTab.description}</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setModalTab(null)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="text-sm text-gray-600 dark:text-gray-300 space-y-2.5 leading-relaxed bg-gray-50 dark:bg-neutral-900 p-4 rounded-xl border border-gray-100 dark:border-neutral-800">
-              {modalTab.id === "safety" ? (
-                <>
-                  <p className="font-semibold text-gray-900 dark:text-white">
-                    🛡️ How Samjhao protects you against scams:
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 text-xs text-gray-600 dark:text-gray-300">
-                    <li>Flags fake lottery, prize notices, and impersonation.</li>
-                    <li>Warns against unsolicited OTP, PIN, and CVV requests.</li>
-                    <li>Detects pressure tactics and fake legal threats.</li>
-                    <li>Always recommends verifying with official branch helplines.</li>
-                  </ul>
-                </>
-              ) : (
-                <>
-                  <p className="font-semibold text-gray-900 dark:text-white">
-                    🔒 Zero Data Retention Policy:
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 text-xs text-gray-600 dark:text-gray-300">
-                    <li>Documents are analyzed exclusively in temporary memory.</li>
-                    <li>No database storage or cloud bucket archival.</li>
-                    <li>Your document text is never used to train public models.</li>
-                    <li>Always mask Aadhaar / PAN numbers if possible for privacy.</li>
-                  </ul>
-                </>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setModalTab(null)}
-              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition-colors"
-            >
-              Got it
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

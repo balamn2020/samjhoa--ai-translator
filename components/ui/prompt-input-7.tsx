@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   HelpCircle,
   Bot,
-  Pencil,
   Paperclip,
   ArrowUp,
   X,
@@ -16,7 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { SupportedLanguage } from "@/lib/schemas";
 
-export type PromptMode = "ask" | "agent" | "edit";
+export type PromptMode = "ask" | "agent";
 
 export const PROMPT_LANGUAGES: {
   id: SupportedLanguage;
@@ -62,14 +61,6 @@ const MODES = [
     color: "bg-purple-50 dark:bg-purple-950/70 text-purple-800 dark:text-purple-200 border-purple-200 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-900/60",
     activeColor: "bg-purple-600 text-white border-purple-600",
     placeholder: "Run autonomous analysis: transcribe, check scams, extract money & dates...",
-  },
-  {
-    id: "edit" as PromptMode,
-    label: "Edit",
-    icon: Pencil,
-    color: "bg-emerald-50 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-200 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/60",
-    activeColor: "bg-emerald-600 text-white border-emerald-600",
-    placeholder: "Paste document text to summarize, simplify, or rewrite...",
   },
 ] as const;
 
@@ -256,7 +247,6 @@ export default function PromptInput7({
                         <span className="text-[10px] text-gray-500 dark:text-gray-400 font-normal leading-tight">
                           {m.id === "ask" && "Ask questions"}
                           {m.id === "agent" && "Full document analysis"}
-                          {m.id === "edit" && "Rewrite or simplify"}
                         </span>
                       </div>
                     </button>
