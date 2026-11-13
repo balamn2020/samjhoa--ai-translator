@@ -49,8 +49,6 @@ export const DEFAULT_SHELL_TABS: AppShellTabItem[] = [
     label: "Samples",
     labelHi: "नमूने",
     icon: Sparkles,
-    badge: "Interactive",
-    badgeColor: "bg-purple-100 text-purple-700 dark:bg-purple-900/60 dark:text-purple-300",
     description: "Try real-world bank, utility, and notice examples",
   },
   {
@@ -58,8 +56,6 @@ export const DEFAULT_SHELL_TABS: AppShellTabItem[] = [
     label: "Safety & Scams",
     labelHi: "सुरक्षा",
     icon: ShieldCheck,
-    badge: "Protection",
-    badgeColor: "bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300",
     description: "Learn how Samjhao detects phishing and fake notices",
   },
   {
@@ -67,8 +63,6 @@ export const DEFAULT_SHELL_TABS: AppShellTabItem[] = [
     label: "Privacy",
     labelHi: "गोपनीयता",
     icon: Lock,
-    badge: "Zero-Store",
-    badgeColor: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300",
     description: "100% ephemeral: documents are analyzed once & erased",
   },
   {
@@ -76,8 +70,6 @@ export const DEFAULT_SHELL_TABS: AppShellTabItem[] = [
     label: "About",
     labelHi: "परिचय",
     icon: Info,
-    badge: "Mission",
-    badgeColor: "bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300",
     description: "Learn about the mission, features, and creators of Samjhao",
   },
 ];
@@ -199,19 +191,6 @@ export default function AppShell8({
                       </span>
                     )}
                   </div>
-
-                  {tab.badge && (
-                    <span
-                      className={cn(
-                        "text-[10px] font-semibold px-2 py-0.5 rounded-full border",
-                        isActive
-                          ? "bg-blue-700/80 text-white border-blue-500"
-                          : tab.badgeColor || "bg-gray-100 dark:bg-neutral-900 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-neutral-800"
-                      )}
-                    >
-                      {tab.badge}
-                    </span>
-                  )}
                 </button>
               );
             })}

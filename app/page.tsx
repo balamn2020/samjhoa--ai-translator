@@ -219,18 +219,13 @@ export default function Home() {
 
               {/* Tilted Tiles Showcase */}
               <div id="samples-section" className="pt-2 scroll-mt-20">
-                <div className="flex items-center justify-between mb-3 px-1">
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                      Try with a real sample document
-                    </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Click any card to instantly see how Samjhao explains it
-                    </p>
-                  </div>
-                  <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-50 dark:bg-neutral-900 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-neutral-800">
-                    Interactive
-                  </span>
+                <div className="mb-3 px-1">
+                  <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                    Try with a real sample document
+                  </h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Click any card to instantly see how Samjhao explains it
+                  </p>
                 </div>
                 <TiltedTiles onTileClick={handleTileClick} height={280} />
               </div>
